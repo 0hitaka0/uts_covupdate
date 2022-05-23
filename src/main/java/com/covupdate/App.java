@@ -35,17 +35,23 @@ public class App {
             
             try {
 
-                HttpEntity entity = response.getEntity();
-                if (entity != null) {
-                    String json = IOUtils.toString(entity.getContent());
+                if (response.getEntity() != null) {
+                    String json = IOUtils.toString(response.getEntity().getContent());
                     JSONArray array = new JSONArray(json);
                     JSONObject object_today = array.getJSONObject(array.length() - 1);
                     JSONObject object_yesterday = array.getJSONObject(array.length() - 2);
                     
-                    System.out.println("Terkonfirmasi \t: " + (Integer.parseInt(object_today.get("Confirmed").toString()) - Integer.parseInt(object_yesterday.get("Confirmed").toString())) + " Kasus");
-                    System.out.println("Tot. kasus \t: " + suffix(Integer.parseInt(object_today.get("Confirmed").toString())));
-                    System.out.println("Meninggal \t: " + (Integer.parseInt(object_today.get("Deaths").toString()) - Integer.parseInt(object_yesterday.get("Deaths").toString())));
-                    System.out.println("Tot. meninggal \t: " + suffix(Integer.parseInt(object_today.get("Deaths").toString())));
+                    Integer todayConfirmed = Integer.parseInt(object_today.get("Confirmed").toString());
+                    Integer yesterdayConfirmed = Integer.parseInt(object_yesterday.get("Confirmed").toString());
+                    Integer todayDeaths = Integer.parseInt(object_today.get("Deaths").toString());
+                    Integer yesterdayDeaths = Integer.parseInt(object_yesterday.get("Deaths").toString());
+
+                    
+
+                    System.out.println("Terkonfirmasi \t: " + (todayConfirmed - yesterdayConfirmed) + " Kasus");
+                    System.out.println("Tot. kasus \t: " + suffix(todayConfirmed));
+                    System.out.println("Meninggal \t: " + (todayDeaths.equals(yesterdayDeaths)?"Tidak ada yang meninggal hari ini":( todayDeaths - yesterdayDeaths)));
+                    System.out.println("Tot. meninggal \t: " + suffix(todayDeaths));
                     DateTimeFormatter dayFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
                     OffsetDateTime dateTime = OffsetDateTime.parse(object_today.get("Date").toString());
                     System.out.println("Terakhir diperbarui " + dateTime.format(dayFormatter));
