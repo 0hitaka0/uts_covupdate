@@ -17,7 +17,8 @@ public class App {
     public static String suffix(long count ) {
         if (count < 1000) return "" + count;
         int exp = (int) (Math.log(count) / Math.log(1000));
-        return String.format("%." + ( exp > 1 ? 2 : 0 ) + "f%s", count / Math.pow(1000, exp), "RbJtMy".substring((exp-1)*2, exp*2));
+        String idSeparator = "RbJtMy";
+        return String.format("%." + ( exp > 1 ? 2 : 0 ) + "f%s", count / Math.pow(1000, exp), idSeparator.substring((exp-1)*2, exp*2));
     }
     
     public static void main(String[] args) throws IOException {
@@ -44,16 +45,17 @@ public class App {
                     Integer todayConfirmed = Integer.parseInt(object_today.get("Confirmed").toString());
                     Integer yesterdayConfirmed = Integer.parseInt(object_yesterday.get("Confirmed").toString());
                     Integer todayDeaths = Integer.parseInt(object_today.get("Deaths").toString());
-                    Integer yesterdayDeaths = Integer.parseInt(object_yesterday.get("Deaths").toString());
-
-                    
+                    Integer yesterdayDeaths = Integer.parseInt(object_yesterday.get("Deaths").toString());                    
 
                     System.out.println("Terkonfirmasi \t: " + (todayConfirmed - yesterdayConfirmed) + " Kasus");
                     System.out.println("Tot. kasus \t: " + suffix(todayConfirmed));
                     System.out.println("Meninggal \t: " + (todayDeaths==yesterdayDeaths?"Tidak ada yang meninggal hari ini":( todayDeaths - yesterdayDeaths)));
                     System.out.println("Tot. meninggal \t: " + suffix(todayDeaths));
+                    String todayDate = object_today.get("Date").toString();
+                    todayDate.replace("T00:00:00Z", "");
+                     
                     DateTimeFormatter dayFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-                    OffsetDateTime dateTime = OffsetDateTime.parse(object_today.get("Date").toString());
+                    OffsetDateTime dateTime = OffsetDateTime.parse(todayDate);
                     System.out.println("Terakhir diperbarui " + dateTime.format(dayFormatter));
 
                 }
