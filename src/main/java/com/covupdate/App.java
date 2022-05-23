@@ -50,7 +50,7 @@ public class App {
 
                     System.out.println("Terkonfirmasi \t: " + (todayConfirmed - yesterdayConfirmed) + " Kasus");
                     System.out.println("Tot. kasus \t: " + suffix(todayConfirmed));
-                    System.out.println("Meninggal \t: " + (todayDeaths.equals(yesterdayDeaths)?"Tidak ada yang meninggal hari ini":( todayDeaths - yesterdayDeaths)));
+                    System.out.println("Meninggal \t: " + (todayDeaths==yesterdayDeaths?"Tidak ada yang meninggal hari ini":( todayDeaths - yesterdayDeaths)));
                     System.out.println("Tot. meninggal \t: " + suffix(todayDeaths));
                     DateTimeFormatter dayFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
                     OffsetDateTime dateTime = OffsetDateTime.parse(object_today.get("Date").toString());
